@@ -1,3 +1,3 @@
-Python Hello World App
+Python Hello World
 
 Written in Flask
