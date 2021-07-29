@@ -1,3 +1,9 @@
+def sendEmail (String buildStatus) {
+    buildStatus = buildStatus ?: 'SUCCESFUL'
+    emailtext body: "More info at: $(env.BUILD_URL)",
+              subject: "Name: '$(env.JOB_NAME)' Status: $(buildStatus)",
+              to: "$(DEFAULT_RECIPIENTS)"
+}
 pipeline {
     agent {
         label 'workers'
@@ -21,6 +27,13 @@ pipeline {
                 sh "docker push dockerjenkinsg/python-hello-world:1"
 
                 sh "docker rmi python-hello-world dockerjenkinsg/python-hello-world:1"
+            }
+        }
+        post {
+            always {
+                if (env.BRANCH_NAME == 'develop') {
+                    sendEmail(currentBuild.currentResult)
+                }
             }
         }
     }
