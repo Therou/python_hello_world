@@ -23,12 +23,5 @@ pipeline {
                 sh "docker rmi python-hello-world dockerjenkinsg/python-hello-world:1"
             }
         }
-        post {
-            always {
-                if (env.BRANCH_NAME == 'develop') {
-                    sendEmail(currentBuild.currentResult)
-                }
-            }
-        }
     }
 }
